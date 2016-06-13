@@ -24,6 +24,7 @@
 #include "flash.h"
 #include "chipdrivers.h"
 #include "spi.h"
+#include "flashchips.h"
 
 /* === Generic functions === */
 int spi_write_status_enable(struct flashctx *flash)
@@ -462,6 +463,41 @@ int spi_prettyprint_status_register_at25df(struct flashctx *flash)
 	spi_prettyprint_status_register_atmel_at25_epewpp(status);
 	spi_prettyprint_status_register_atmel_at25_swp(status);
 	spi_prettyprint_status_register_welwip(status);
+
+	if (flash->chip->model_id == ATMEL_AT25DF161)
+	{
+		int address, i, count, result;
+		unsigned char read_result, lockdown_status_sector[32], cmd[5];
+		cmd[0] = (unsigned char)0x35;
+		cmd[4] = (unsigned char)0x00;
+
+		for (address = 0x000000, i = 0, count = 0; address < 0x200000; address += 0x010000, i++)
+		{
+			cmd[1] = (unsigned char)(address >> 16) & 0xff;
+			cmd[2] = (unsigned char)(address >> 8) & 0xff;
+			cmd[3] = (unsigned char)address & 0xff;
+			result = spi_send_command(flash, sizeof(cmd), sizeof(unsigned char), cmd, &read_result);
+			if (result)
+			{
+				msg_cerr("%s failed during command execution (ATMEL_AT25DF161)\n", __func__);
+				return result;
+			}
+			if (i % 8 == 0)
+				msg_cdbg("0x%02x:", i);
+			msg_cdbg(" %02x%s", read_result, (i + 1) % 8 == 0 ? "\n": "");
+			lockdown_status_sector[address / 0x010000] = read_result;
+			if (read_result)
+				count++;
+		}
+
+		msg_cdbg("%d sector%s locked down permanently%s", count, (count == 1) ? "" : "s", (count == 0) ? "." : " :");
+		if (count)
+			for (i = 0; i < 32; i++)
+				if (lockdown_status_sector[i])
+					msg_cdbg(" %2d", i);
+		msg_cdbg("\n");
+	}
+
 	return 0;
 }
 
