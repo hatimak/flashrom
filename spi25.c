@@ -351,9 +351,15 @@ int spi_chip_erase_60(struct flashctx *flash)
 	/* Wait until the Write-In-Progress bit is cleared.
 	 * This usually takes 1-85 s, so wait in 1 s steps.
 	 */
-	/* FIXME: We assume spi_read_status_register will never fail. */
-	while (spi_read_status_register(flash) & SPI_SR_WIP)
-		programmer_delay(1000 * 1000);
+	/* FIXME: We assume reading status register(s) will never fail. */
+	// TODO(hatim): Switch to newer infrastructure completely after integration
+	if (flash->chip->status_register) {
+		while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+			programmer_delay(1000 * 1000);
+	} else {
+		while (spi_read_status_register(flash) & SPI_SR_WIP)
+			programmer_delay(1000 * 1000);
+	}
 	/* FIXME: Check the status register for errors. */
 	return 0;
 }
@@ -388,9 +394,15 @@ int spi_chip_erase_62(struct flashctx *flash)
 	/* Wait until the Write-In-Progress bit is cleared.
 	 * This usually takes 2-5 s, so wait in 100 ms steps.
 	 */
-	/* FIXME: We assume spi_read_status_register will never fail. */
-	while (spi_read_status_register(flash) & SPI_SR_WIP)
-		programmer_delay(100 * 1000);
+	/* FIXME: We assume reading status register(s) will never fail. */
+	// TODO(hatim): Switch to newer infrastructure completely after integration
+	if (flash->chip->status_register) {
+		while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+			programmer_delay(100 * 1000);
+	} else {
+		while (spi_read_status_register(flash) & SPI_SR_WIP)
+			programmer_delay(100 * 1000);
+	}
 	/* FIXME: Check the status register for errors. */
 	return 0;
 }
@@ -424,9 +436,15 @@ int spi_chip_erase_c7(struct flashctx *flash)
 	/* Wait until the Write-In-Progress bit is cleared.
 	 * This usually takes 1-85 s, so wait in 1 s steps.
 	 */
-	/* FIXME: We assume spi_read_status_register will never fail. */
-	while (spi_read_status_register(flash) & SPI_SR_WIP)
-		programmer_delay(1000 * 1000);
+	/* FIXME: We assume reading status register(s) will never fail. */
+	// TODO(hatim): Switch to newer infrastructure completely after integration
+	if (flash->chip->status_register) {
+		while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+			programmer_delay(1000 * 1000);
+	} else {
+		while (spi_read_status_register(flash) & SPI_SR_WIP)
+			programmer_delay(1000 * 1000);
+	}
 	/* FIXME: Check the status register for errors. */
 	return 0;
 }
@@ -467,8 +485,15 @@ int spi_block_erase_52(struct flashctx *flash, unsigned int addr,
 	/* Wait until the Write-In-Progress bit is cleared.
 	 * This usually takes 100-4000 ms, so wait in 100 ms steps.
 	 */
-	while (spi_read_status_register(flash) & SPI_SR_WIP)
-		programmer_delay(100 * 1000);
+	/* FIXME: We assume reading status register(s) will never fail. */
+	// TODO(hatim): Switch to newer infrastructure completely after integration
+	if (flash->chip->status_register) {
+		while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+			programmer_delay(100 * 1000);
+	} else {
+		while (spi_read_status_register(flash) & SPI_SR_WIP)
+			programmer_delay(100 * 1000);
+	}
 	/* FIXME: Check the status register for errors. */
 	return 0;
 }
@@ -510,8 +535,15 @@ int spi_block_erase_c4(struct flashctx *flash, unsigned int addr, unsigned int b
 	/* Wait until the Write-In-Progress bit is cleared.
 	 * This usually takes 240-480 s, so wait in 500 ms steps.
 	 */
-	while (spi_read_status_register(flash) & SPI_SR_WIP)
-		programmer_delay(500 * 1000 * 1000);
+	/* FIXME: We assume reading status register(s) will never fail. */
+	// TODO(hatim): Switch to newer infrastructure completely after integration
+	if (flash->chip->status_register) {
+		while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+			programmer_delay(500 * 1000);
+	} else {
+		while (spi_read_status_register(flash) & SPI_SR_WIP)
+			programmer_delay(500 * 1000);
+	}
 	/* FIXME: Check the status register for errors. */
 	return 0;
 }
@@ -557,8 +589,15 @@ int spi_block_erase_d8(struct flashctx *flash, unsigned int addr,
 	/* Wait until the Write-In-Progress bit is cleared.
 	 * This usually takes 100-4000 ms, so wait in 100 ms steps.
 	 */
-	while (spi_read_status_register(flash) & SPI_SR_WIP)
-		programmer_delay(100 * 1000);
+	/* FIXME: We assume reading status register(s) will never fail. */
+	// TODO(hatim): Switch to newer infrastructure completely after integration
+	if (flash->chip->status_register) {
+		while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+			programmer_delay(100 * 1000);
+	} else {
+		while (spi_read_status_register(flash) & SPI_SR_WIP)
+			programmer_delay(100 * 1000);
+	}
 	/* FIXME: Check the status register for errors. */
 	return 0;
 }
@@ -602,8 +641,15 @@ int spi_block_erase_d7(struct flashctx *flash, unsigned int addr,
 	/* Wait until the Write-In-Progress bit is cleared.
 	 * This usually takes 100-4000 ms, so wait in 100 ms steps.
 	 */
-	while (spi_read_status_register(flash) & SPI_SR_WIP)
-		programmer_delay(100 * 1000);
+	/* FIXME: We assume reading status register(s) will never fail. */
+	// TODO(hatim): Switch to newer infrastructure completely after integration
+	if (flash->chip->status_register) {
+		while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+			programmer_delay(100 * 1000);
+	} else {
+		while (spi_read_status_register(flash) & SPI_SR_WIP)
+			programmer_delay(100 * 1000);
+	}
 	/* FIXME: Check the status register for errors. */
 	return 0;
 }
@@ -643,8 +689,15 @@ int spi_block_erase_db(struct flashctx *flash, unsigned int addr, unsigned int b
 
 	/* Wait until the Write-In-Progress bit is cleared.
 	 * This takes up to 20 ms usually (on worn out devices up to the 0.5s range), so wait in 1 ms steps. */
-	while (spi_read_status_register(flash) & SPI_SR_WIP)
-		programmer_delay(1 * 1000);
+	/* FIXME: We assume reading status register(s) will never fail. */
+	// TODO(hatim): Switch to newer infrastructure completely after integration
+	if (flash->chip->status_register) {
+		while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+			programmer_delay(1 * 1000);
+	} else {
+		while (spi_read_status_register(flash) & SPI_SR_WIP)
+			programmer_delay(1 * 1000);
+	}
 	/* FIXME: Check the status register for errors. */
 	return 0;
 }
@@ -686,8 +739,15 @@ int spi_block_erase_20(struct flashctx *flash, unsigned int addr,
 	/* Wait until the Write-In-Progress bit is cleared.
 	 * This usually takes 15-800 ms, so wait in 10 ms steps.
 	 */
-	while (spi_read_status_register(flash) & SPI_SR_WIP)
-		programmer_delay(10 * 1000);
+	/* FIXME: We assume reading status register(s) will never fail. */
+	// TODO(hatim): Switch to newer infrastructure completely after integration
+	if (flash->chip->status_register) {
+		while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+			programmer_delay(10 * 1000);
+	} else {
+		while (spi_read_status_register(flash) & SPI_SR_WIP)
+			programmer_delay(10 * 1000);
+	}
 	/* FIXME: Check the status register for errors. */
 	return 0;
 }
@@ -726,8 +786,15 @@ int spi_block_erase_50(struct flashctx *flash, unsigned int addr, unsigned int b
 	/* Wait until the Write-In-Progress bit is cleared.
 	 * This usually takes 10 ms, so wait in 1 ms steps.
 	 */
-	while (spi_read_status_register(flash) & SPI_SR_WIP)
-		programmer_delay(1 * 1000);
+	/* FIXME: We assume reading status register(s) will never fail. */
+	// TODO(hatim): Switch to newer infrastructure completely after integration
+	if (flash->chip->status_register) {
+		while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+			programmer_delay(1 * 1000);
+	} else {
+		while (spi_read_status_register(flash) & SPI_SR_WIP)
+			programmer_delay(1 * 1000);
+	}
 	/* FIXME: Check the status register for errors. */
 	return 0;
 }
@@ -766,8 +833,15 @@ int spi_block_erase_81(struct flashctx *flash, unsigned int addr, unsigned int b
 	/* Wait until the Write-In-Progress bit is cleared.
 	 * This usually takes 8 ms, so wait in 1 ms steps.
 	 */
-	while (spi_read_status_register(flash) & SPI_SR_WIP)
-		programmer_delay(1 * 1000);
+	/* FIXME: We assume reading status register(s) will never fail. */
+	// TODO(hatim): Switch to newer infrastructure completely after integration
+	if (flash->chip->status_register) {
+		while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+			programmer_delay(1 * 1000);
+	} else {
+		while (spi_read_status_register(flash) & SPI_SR_WIP)
+			programmer_delay(1 * 1000);
+	}
 	/* FIXME: Check the status register for errors. */
 	return 0;
 }
@@ -1014,8 +1088,14 @@ int spi_write_chunked(struct flashctx *flash, const uint8_t *buf, unsigned int s
 			rc = spi_nbyte_program(flash, starthere + j, buf + starthere - start + j, towrite);
 			if (rc)
 				break;
-			while (spi_read_status_register(flash) & SPI_SR_WIP)
-				programmer_delay(10);
+			// TODO(hatim): Switch to newer infrastructure completely after integration
+			if (flash->chip->status_register) {
+				while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+					programmer_delay(10);
+			} else {
+				while (spi_read_status_register(flash) & SPI_SR_WIP)
+					programmer_delay(10);
+			}
 		}
 		if (rc)
 			break;
@@ -1040,8 +1120,14 @@ int spi_chip_write_1(struct flashctx *flash, const uint8_t *buf, unsigned int st
 		result = spi_byte_program(flash, i, buf[i - start]);
 		if (result)
 			return 1;
-		while (spi_read_status_register(flash) & SPI_SR_WIP)
-			programmer_delay(10);
+		// TODO(hatim): Switch to newer infrastructure completely after integration
+		if (flash->chip->status_register) {
+			while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+				programmer_delay(10);
+		} else {
+			while (spi_read_status_register(flash) & SPI_SR_WIP)
+				programmer_delay(10);
+		}
 	}
 
 	return 0;
@@ -1130,8 +1216,14 @@ int default_spi_write_aai(struct flashctx *flash, const uint8_t *buf, unsigned i
 		msg_cerr("%s failed during start command execution: %d\n", __func__, result);
 		goto bailout;
 	}
-	while (spi_read_status_register(flash) & SPI_SR_WIP)
-		programmer_delay(10);
+	// TODO(hatim): Switch to newer infrastructure completely after integration
+	if (flash->chip->status_register) {
+		while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+			programmer_delay(10);
+	} else {
+		while (spi_read_status_register(flash) & SPI_SR_WIP)
+			programmer_delay(10);
+	}
 
 	/* We already wrote 2 bytes in the multicommand step. */
 	pos += 2;
@@ -1145,8 +1237,14 @@ int default_spi_write_aai(struct flashctx *flash, const uint8_t *buf, unsigned i
 			msg_cerr("%s failed during followup AAI command execution: %d\n", __func__, result);
 			goto bailout;
 		}
-		while (spi_read_status_register(flash) & SPI_SR_WIP)
-			programmer_delay(10);
+		// TODO(hatim): Switch to newer infrastructure completely after integration
+		if (flash->chip->status_register) {
+			while (flash->chip->status_register->read(flash, SR1) & SPI_SR_WIP)
+				programmer_delay(10);
+		} else {
+			while (spi_read_status_register(flash) & SPI_SR_WIP)
+				programmer_delay(10);
+		}
 	}
 
 	/* Use WRDI to exit AAI mode. This needs to be done before issuing any other non-AAI command. */

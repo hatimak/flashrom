@@ -36,6 +36,7 @@
 #if HAVE_UTSNAME == 1
 #include <sys/utsname.h>
 #endif
+#include "chipdrivers.h"
 #include "flash.h"
 #include "flashchips.h"
 #include "programmer.h"
@@ -1260,9 +1261,17 @@ notfound:
 
 	/* Flash registers may more likely not be mapped if the chip was forced.
 	 * Lock info may be stored in registers, so avoid lock info printing. */
-	if (!force)
-		if (flash->chip->printlock)
+	if (!force) {
+		if (flash->chip->status_register) {
+			for (enum status_register_num SRn = SR1; SRn <= top_status_register(flash); SRn++)
+				flash->chip->status_register->print(flash, SRn);
+			flash->chip->status_register->print_wp_mode(flash);
+			if (flash->chip->wp)
+				print_range_generic(flash);
+		} else if (flash->chip->printlock) {
 			flash->chip->printlock(flash);
+		}
+	}
 
 	/* Get out of the way for later runs. */
 	unmap_flash(flash);
@@ -1998,7 +2007,9 @@ int doit(struct flashctx *flash, int force, const char *filename, int read_it,
 	/* Given the existence of read locks, we want to unlock for read,
 	 * erase and write.
 	 */
-	if (flash->chip->unlock)
+	if (flash->chip->wp)
+		flash->chip->wp->disable(flash);
+	else if (flash->chip->unlock)
 		flash->chip->unlock(flash);
 
 	if (read_it) {
