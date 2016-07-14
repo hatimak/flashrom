@@ -24,6 +24,7 @@
 #include "flash.h"
 #include "chipdrivers.h"
 #include "spi.h"
+#include "flashchips.h"
 
 /* === Generic functions === */
 int spi_write_status_enable(struct flashctx *flash)
@@ -659,6 +660,48 @@ int spi_prettyprint_status_register_n25q(struct flashctx *flash)
 	msg_cdbg("Chip status register: Top/Bottom (TB) is %s\n", (status & (1 << 5)) ? "bottom" : "top");
 	spi_prettyprint_status_register_bp(status, 2);
 	spi_prettyprint_status_register_welwip(status);
+
+	if (flash->chip->model_id == ST_N25Q128__3E)
+	{
+		int address, i, count, result;
+		uint8_t read_result, lockdown_status_sector[flash->chip->total_size / 64], cmd[4];
+		cmd[0] = (uint8_t)0xE8;
+
+		msg_cdbg("Additional information regarding block locks for %s\n", flash->chip->name);
+		for (address = 0x000000, i = 0, count = 0;
+			address < flash->chip->total_size * 1024;
+			address += 0x010000, i++)
+		{
+			cmd[1] = (unsigned char)(address >> 16) & 0xff;
+			cmd[2] = (unsigned char)(address >> 8) & 0xff;
+			cmd[3] = (unsigned char)address & 0xff;
+			result = spi_send_command(flash, sizeof(cmd), sizeof(uint8_t), cmd, &read_result);
+			if (result)
+			{
+				msg_cerr("%s failed during command execution (ST_N25Q128__3E)\n", __func__);
+				return result;
+			}
+			if (i % 8 == 0)
+				msg_cdbg("0x%02x:", i);
+			msg_cdbg(" [%s,%s]%s",
+				(read_result & 0x02) ? "1" : "0",
+				(read_result & 0x01) ? "1" : "0",
+				(i + 1) % 8 == 0 ? "\n": "");
+			lockdown_status_sector[address / 0x010000] = read_result & 0x03;
+			if (read_result & 0x01)
+				count++;
+		}
+
+		msg_cdbg("%d sector%s locked down%s", count, (count == 1) ? "" : "s",
+			(count == 0) ? "." : " :");
+		if (count)
+			for (i = 0; i < ARRAY_SIZE(lockdown_status_sector); i++)
+				if (lockdown_status_sector[i])
+					msg_cdbg(" %2d", i);
+		msg_cdbg("\n");
+		msg_cdbg("You _may_ be able to unlock the sector%s\n", (count == 1) ? "" : "s");
+	}
+
 	return 0;
 }
 
