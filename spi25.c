@@ -1269,3 +1269,76 @@ bailout:
 		msg_cerr("%s failed to disable AAI mode.\n", __func__);
 	return SPI_GENERIC_ERROR;
 }
+
+
+/* This function is specific to mostly Eon chips. It maps the
+ * additional OTP sector to the top or bottom sector (depending
+ * on the chip). The mapped sector behaves like just another
+ * normal sector. */
+int spi_enter_otp_mode(struct flashctx *flash)
+{
+	static const unsigned char cmd[JEDEC_ENTER_OTP_OUTSIZE] = { JEDEC_ENTER_OTP };
+	return spi_send_command(flash, sizeof(cmd), 0, cmd, NULL);
+}
+
+int spi_sec_reg_read(struct flashctx *flash, uint8_t *buf, uint32_t start_addr, uint32_t len)
+{
+	/* We assume that start_addr and len are correct and proceed without any error checking. */
+	uint8_t cmd[JEDEC_READ_SEC_REG_OUTSIZE] = {
+		(uint8_t)JEDEC_READ_SEC_REG,
+		(uint8_t)(start_addr >> 16) & 0xff,
+		(uint8_t)(start_addr >> 8) & 0xff,
+		(uint8_t)start_addr & 0xff,
+		(uint8_t)0x00,
+	};
+
+	int result = spi_send_command(flash, sizeof(cmd), len, cmd, buf);
+	if (result)
+		msg_cerr("%s failed.\n", __func__);
+	return result;
+}
+
+int spi_sec_reg_prog(struct flashctx *flash, uint8_t const *buf, uint32_t start_addr, uint32_t len)
+{
+	/* We assume that start_addr and len are correct, the security register is unlocked
+	 * and proceed without any error checking. */
+	int ret = spi_write_enable(flash);
+	if (ret) {
+		msg_cerr("%s failed\n", __func__);
+		return ret;
+	}
+
+	uint8_t cmd[JEDEC_PROG_BYTE_SEC_REG_OUTSIZE - 1 + len];
+	cmd[0] = (uint8_t)JEDEC_PROG_BYTE_SEC_REG;
+	cmd[1] = (uint8_t)(start_addr >> 16) & 0xff;
+	cmd[2] = (uint8_t)(start_addr >> 8) & 0xff;
+	cmd[3] = (uint8_t)start_addr & 0xff;
+	memcpy((void *)&cmd[4], (void *)buf, (size_t)len);
+	// FIXME(hatim): We should probably poll WIP bit
+	ret = spi_send_command(flash, sizeof(cmd), 0, cmd, NULL);
+	if (ret)
+		msg_cerr("%s\n", __func__);
+	return ret;
+}
+
+int spi_sec_reg_erase(struct flashctx *flash, uint32_t addr)
+{
+	/* We assume that addr is correct and proceed without any error checking. */
+	int ret = spi_write_enable(flash);
+	if (ret) {
+		msg_cerr("%s failed\n", __func__);
+		return ret;
+	}
+
+	uint8_t cmd[JEDEC_ERASE_SEC_REG_OUTSIZE] = {
+		(uint8_t)JEDEC_ERASE_SEC_REG,
+		(uint8_t)(addr >> 16) & 0xff,
+		(uint8_t)(addr >> 8) & 0xff,
+		(uint8_t)addr & 0xff,
+	};
+	// FIXME(hatim): We should probably poll WIP bit
+	ret = spi_send_command(flash, sizeof(cmd), 0, cmd, NULL);
+	if (ret)
+		msg_cerr("%s\n", __func__);
+	return ret;
+}
