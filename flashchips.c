@@ -4517,8 +4517,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= EON_EN25Q40,
 		.total_size	= 512,
 		.page_size	= 256,
-		/* OTP: 256B total; enter 0x3A */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -4543,6 +4542,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read,
 		.voltage	= {2700, 3600},
 		.wp		= &en25q40_wp,
+		.otp		= &en256_512otp,
 	},
 
 	{
@@ -4553,8 +4553,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= EON_EN25Q80,
 		.total_size	= 1024,
 		.page_size	= 256,
-		/* OTP: 256B total; enter 0x3A */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -4579,6 +4578,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read,
 		.voltage	= {2700, 3600},
 		.wp		= &en25q80a_wp,
+		.otp		= &en256_1024otp,
 	},
 
 	{
@@ -4591,8 +4591,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= EON_EN25Q16,
 		.total_size	= 2048,
 		.page_size	= 256,
-		/* OTP: D16 512B/Q16 128B total; enter 0x3A */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -4621,6 +4620,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read,
 		.voltage	= {2700, 3600},
 		.wp		= &en25q16_wp,
+		.otp		= &en128_2048otp,
 	},
 
 	{
@@ -4631,8 +4631,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= EON_EN25Q32,
 		.total_size	= 4096,
 		.page_size	= 256,
-		/* OTP: 512B total; enter 0x3A */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -4657,6 +4656,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read,
 		.voltage	= {2700, 3600},
 		.wp		= &en25q32_wp,
+		.otp		= &en512_4096otp,
 	},
 
 	{
@@ -4667,8 +4667,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= EON_EN25Q32,
 		.total_size	= 4096,
 		.page_size	= 256,
-		/* OTP: 512B total; enter 0x3A */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -4693,6 +4692,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read,
 		.voltage	= {2700, 3600},
 		.wp		= &en25q32ab_wp,
+		.otp		= &en512_4096otp,
 	},
 
 	{
@@ -4703,8 +4703,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= EON_EN25Q64,
 		.total_size	= 8192,
 		.page_size	= 256,
-		/* OTP: 512B total; enter 0x3A */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -4729,6 +4728,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read,
 		.voltage	= {2700, 3600},
 		.wp		= &en25q64_wp,
+		.otp		= &en512_8192otp,
 	},
 
 	{
@@ -4739,8 +4739,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= EON_EN25Q128,
 		.total_size	= 16384,
 		.page_size	= 256,
-		/* OTP: 512B total; enter 0x3A */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -4764,6 +4763,7 @@ const struct flashchip flashchips[] = {
 		.write		= spi_chip_write_256,
 		.read		= spi_chip_read,
 		.wp		= &en25q128_wp,
+		.otp		= &en512_16384otp,
 	},
 
 	{
@@ -4775,9 +4775,8 @@ const struct flashchip flashchips[] = {
 		.total_size	= 2048,
 		.page_size	= 256,
 		/* supports SFDP */
-		/* OTP: 512B total; enter 0x3A */
 		/* QPI enable 0x38, disable 0xFF */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP | FEATURE_QPI,
+		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_QPI,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -4802,6 +4801,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read,
 		.voltage	= {2700, 3600},
 		.wp		= &en25qh16_wp,
+		.otp		= &en512_2048otp,
 	},
 
 	{
@@ -4813,9 +4813,8 @@ const struct flashchip flashchips[] = {
 		.total_size	= 4096,
 		.page_size	= 256,
 		/* supports SFDP */
-		/* OTP: 512B total; enter 0x3A */
 		/* QPI enable 0x38, disable 0xFF */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP | FEATURE_QPI,
+		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_QPI,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -4840,6 +4839,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read,
 		.voltage	= {2700, 3600},
 		.wp		= &en25qh32_wp,
+		.otp		= &en512_4096otp,
 	},
 
 	{
@@ -4851,9 +4851,8 @@ const struct flashchip flashchips[] = {
 		.total_size	= 8192,
 		.page_size	= 256,
 		/* supports SFDP */
-		/* OTP: 512B total; enter 0x3A */
 		/* QPI enable 0x38, disable 0xFF */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP | FEATURE_QPI,
+		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_QPI,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -4877,6 +4876,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read,
 		.voltage	= {2700, 3600},
 		.wp		= &en25qh64_wp,
+		.otp		= &en512_8192otp,
 	},
 
 	{
@@ -4888,9 +4888,8 @@ const struct flashchip flashchips[] = {
 		.total_size	= 16384,
 		.page_size	= 256,
 		/* supports SFDP */
-		/* OTP: 512B total; enter 0x3A */
 		/* QPI enable 0x38, disable 0xFF */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP | FEATURE_QPI,
+		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_QPI,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -4914,6 +4913,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read,
 		.voltage	= {2700, 3600},
 		.wp		= &en25qh128_wp,
+		.otp		= &en512_16384otp,
 	},
 
 	{
@@ -5724,8 +5724,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= GIGADEVICE_GD25LQ40,
 		.total_size	= 512,
 		.page_size	= 256,
-		/* OTP: 1024B total, 256B reserved; read 0x48; write 0x42, erase 0x44 */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -5753,6 +5752,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {1695, 1950},
 		.wp		= &gd_w_wp,
+		.otp		= &gd_w256_3_otp,
 	},
 
 	{
@@ -5763,8 +5763,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= GIGADEVICE_GD25LQ80,
 		.total_size	= 1024,
 		.page_size	= 256,
-		/* OTP: 1024B total, 256B reserved; read 0x48; write 0x42, erase 0x44 */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -5792,6 +5791,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {1695, 1950},
 		.wp		= &gd_w_wp,
+		.otp		= &gd_w256_3_otp,
 	},
 
 	{
@@ -5802,8 +5802,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= GIGADEVICE_GD25LQ16,
 		.total_size	= 2048,
 		.page_size	= 256,
-		/* OTP: 1024B total, 256B reserved; read 0x48; write 0x42, erase 0x44 */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -5831,6 +5830,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {1695, 1950},
 		.wp		= &gd_w_wp,
+		.otp		= &gd_w256_3_otp,
 	},
 
 	{
@@ -6105,7 +6105,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= GIGADEVICE_GD25Q80,
 		.total_size	= 1024,
 		.page_size	= 256,
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -6143,8 +6143,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= GIGADEVICE_GD25Q80,
 		.total_size	= 1024,
 		.page_size	= 256,
-		/* OTP: 1024B total, 256B reserved; read 0x48; write 0x42, erase 0x44 */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -6172,6 +6171,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {2700, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd256_4_otp,
 	},
 
 	{
@@ -6220,8 +6220,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= GIGADEVICE_GD25Q16,
 		.total_size	= 2048,
 		.page_size	= 256,
-		/* OTP: 1024B total, 256B reserved; read 0x48; write 0x42, erase 0x44 (B version only) */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -6249,6 +6248,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {2700, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd256_4_otp,
 	},
 
 	{
@@ -6259,8 +6259,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= GIGADEVICE_GD25Q32,
 		.total_size	= 4096,
 		.page_size	= 256,
-		/* OTP: 1024B total, 256B reserved; read 0x48; write 0x42, erase 0x44 */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -6288,6 +6287,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {2700, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd256_4_otp,
 	},
 
 	{
@@ -6298,8 +6298,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= GIGADEVICE_GD25Q64,
 		.total_size	= 8192,
 		.page_size	= 256,
-		/* OTP: 1024B total, 256B reserved; read 0x48; write 0x42, erase 0x44 */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -6327,6 +6326,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {2700, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd256_4_otp,
 	},
 
 	{
@@ -6337,8 +6337,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= GIGADEVICE_GD25Q128,
 		.total_size	= 16384,
 		.page_size	= 256,
-		/* OTP: 1024B total, 256B reserved; read 0x48; write 0x42, erase 0x44 */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -6366,6 +6365,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {2700, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd256_4_otp,
 	},
 
 	{
@@ -6376,9 +6376,8 @@ const struct flashchip flashchips[] = {
 		.model_id	= GIGADEVICE_GD25Q128,
 		.total_size	= 16384,
 		.page_size	= 256,
-		/* OTP: 1536B total; read 0x48; write 0x42, erase 0x44 */
 		/* QPI: enable 0x38, disable 0xFF */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP | FEATURE_QPI,
+		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_QPI,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -6406,6 +6405,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {2700, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd512_3_otp,
 	},
 
 	{
@@ -6454,8 +6454,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= GIGADEVICE_GD25VQ21B,
 		.total_size	= 256,
 		.page_size	= 256,
-		/* OTP: 1536B total; read 0x48, write 0x42, erase 0x44 */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP | FEATURE_QPI,
+		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_QPI,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -6483,6 +6482,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {2300, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd512_3_otp,
 	},
 
 	{
@@ -6494,8 +6494,7 @@ const struct flashchip flashchips[] = {
 		.total_size	= 512,
 		.page_size	= 256,
 		/* Supports SFDP */
-		/* OTP: 1024B total; read 0x48, write 0x42, erase 0x44 */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP | FEATURE_QPI,
+		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_QPI,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -6523,6 +6522,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {2300, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd256_4_otp,
 	},
 
 	{
@@ -6533,8 +6533,7 @@ const struct flashchip flashchips[] = {
 		.model_id	= GIGADEVICE_GD25VQ41B,
 		.total_size	= 512,
 		.page_size	= 256,
-		/* OTP: 1536B total; read 0x48, write 0x42, erase 0x44 */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP | FEATURE_QPI,
+		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_QPI,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -6562,6 +6561,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {2300, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd512_3_otp,
 	},
 
 	{
@@ -6573,8 +6573,7 @@ const struct flashchip flashchips[] = {
 		.total_size	= 1024,
 		.page_size	= 256,
 		/* Supports SFDP */
-		/* OTP: 1024B total; read 0x48, write 0x42, erase 0x44 */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP | FEATURE_QPI,
+		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_QPI,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -6602,6 +6601,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {2300, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd256_4_otp,
 	},
 
 	{
@@ -6613,8 +6613,7 @@ const struct flashchip flashchips[] = {
 		.total_size	= 2 * 1024,
 		.page_size	= 256,
 		/* Supports SFDP */
-		/* OTP: 1024B total; read 0x48, write 0x42, erase 0x44 */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP | FEATURE_QPI,
+		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_QPI,
 		.tested		= TEST_UNTESTED,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -6642,6 +6641,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {2300, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd256_4_otp,
 	},
 
 	{
@@ -14548,8 +14548,8 @@ const struct flashchip flashchips[] = {
 		.total_size	= 512,
 		.page_size	= 256,
 		/* supports SFDP */
-		/* OTP: 756B total; read 0x48; write 0x42, erase 0x44, read ID 0x4B */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		/* Read ID 0x4B */
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -14577,6 +14577,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 		.voltage	= {2700, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd_w256_3_otp,
 	},
 
 	{
@@ -14708,8 +14709,8 @@ const struct flashchip flashchips[] = {
 		.total_size	= 8192,
 		.page_size	= 256,
 		/* supports SFDP */
-		/* OTP: 1024B total, 256B reserved; read 0x48; write 0x42, erase 0x44, read ID 0x4B */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
+		/* Read ID 0x4B */
+		.feature_bits	= FEATURE_WRSR_WREN,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -14737,6 +14738,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read,
 		.voltage	= {2700, 3600},
 		.wp		= &gd_w_wp,
+		.otp		= &gd_w256_3_otp,
 	},
 
 	{
@@ -14984,9 +14986,9 @@ const struct flashchip flashchips[] = {
 		.model_id	= WINBOND_NEX_W25Q64_W,
 		.total_size	= 8192,
 		.page_size	= 256,
-		/* OTP: 256B total; read 0x48; write 0x42, erase 0x44, read ID 0x4B */
+		/* Read ID 0x4B */
 		/* QPI enable 0x38, disable 0xFF */
-		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP | FEATURE_QPI,
+		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_QPI,
 		.tested		= TEST_OK_PREW,
 		.probe		= probe_spi_rdid,
 		.probe_timing	= TIMING_ZERO,
@@ -15014,6 +15016,7 @@ const struct flashchip flashchips[] = {
 		.read		= spi_chip_read,
 		.voltage	= {1700, 1950}, /* Fast read (0x0B) and multi I/O supported */
 		.wp		= &gd_w_wp,
+		.otp		= &gd_w256_3_otp,
 	},
 
 	{
