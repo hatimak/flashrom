@@ -365,7 +365,7 @@ int write_buf_to_file(const unsigned char *buf, unsigned long size, const char *
 
 /* cli_common.c */
 char *flashbuses_to_text(enum chipbustype bustype);
-void print_chip_support_status(const struct flashchip *chip);
+void print_chip_support_status(struct flashctx *flash);
 
 /* cli_output.c */
 extern int verbose_screen;
