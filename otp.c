@@ -134,7 +134,7 @@ int eon_read_generic(struct flashctx *flash, uint8_t *buf, enum otp_region otp_r
 	}
 
 	enter_otp_mode(flash);
-	result = flash->chip->read(flash, buf, start_byte, len);
+	result = flash->chip->read(flash, buf, flash->chip->otp->region[otp_region].addr | start_byte, len);
 	exit_otp_mode(flash);
 
 	if (result)
@@ -159,7 +159,7 @@ int eon_write_generic(struct flashctx *flash, const uint8_t *buf, enum otp_regio
 	}
 
 	enter_otp_mode(flash);
-	result = flash->chip->write(flash, buf, start_byte, len);
+	result = flash->chip->write(flash, buf, flash->chip->otp->region[otp_region].addr | start_byte, len);
 	exit_otp_mode(flash);
 
 	if (result)

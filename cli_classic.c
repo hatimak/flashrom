@@ -469,7 +469,8 @@ int main(int argc, char *argv[])
 					"specified. Aborting.\n");
 				cli_classic_abort_usage();
 			}
-			erase_otp_opt = strdup(optarg);
+			if (optarg)
+				erase_otp_opt = strdup(optarg);
 			erase_otp = 1;
 			break;
 		case LONGOPT_LOCK_OTP:
@@ -478,7 +479,8 @@ int main(int argc, char *argv[])
 					"specified. Aborting.\n");
 				cli_classic_abort_usage();
 			}
-			lock_otp_opt = strdup(optarg);
+			if (optarg)
+				lock_otp_opt = strdup(optarg);
 			lock_otp = 1;
 			break;
 		default:
@@ -919,7 +921,7 @@ int main(int argc, char *argv[])
 		if (fill_flash->chip->otp) {
 			char *otp_region_opt = NULL;
 			enum otp_region otp_region = OTP_REG_1;
-			if (!erase_otp_opt && (otp_region_opt = extract_param(&read_otp_opt, "reg", ","))) {
+			if (!erase_otp_opt && (otp_region_opt = extract_param(&erase_otp_opt, "reg", ","))) {
 				char *endptr = NULL;
 				// FIXME(hatim): Implement error-checking (?)
 				otp_region = (uint8_t)strtoul(otp_region_opt, &endptr, 0) - 1;
@@ -944,7 +946,7 @@ int main(int argc, char *argv[])
 		if (fill_flash->chip->otp) {
 			char *otp_region_opt = NULL;
 			enum otp_region otp_region = OTP_REG_1;
-			if (!lock_otp_opt && (otp_region_opt = extract_param(&read_otp_opt, "reg", ","))) {
+			if (!lock_otp_opt && (otp_region_opt = extract_param(&lock_otp_opt, "reg", ","))) {
 				char *endptr = NULL;
 				// FIXME(hatim): Implement error-checking (?)
 				otp_region = (uint8_t)strtoul(otp_region_opt, &endptr, 0) - 1;
